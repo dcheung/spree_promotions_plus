@@ -10,8 +10,9 @@ module Spree
 
 		def eligible?(order, options = {})
       item_total = 0.0
+			taxon = Spree::Taxon.find(preferred_taxon)
       order.line_items.each do |line_item|
-        item_total += line_item.amount if line_item.product.taxons.map(&:id).include?(preferred_taxon)
+        item_total += line_item.amount if line_item.product.first_taxon.ancestors.include?(taxon)
       end
       item_total.send(preferred_operator == 'gte' ? :>= : :>, BigDecimal.new(preferred_amount.to_s))
     end
