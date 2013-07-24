@@ -12,7 +12,7 @@ module Spree
 		def compute(object=nil)
 			return 0 if object.nil?
 			taxon = Spree::Taxon.find(preferred_taxon)
-			item_total = object.line_items.map{|li| line_item.product.first_taxon.ancestors.include?(taxon) ? li.amount : 0.0 }.sum
+			item_total = object.line_items.map{|li| li.product.first_taxon.ancestors.include?(taxon) ? li.amount : 0.0 }.sum
 			value = item_total * BigDecimal(self.preferred_flat_percent.to_s) / 100.0
 			(value * 100).round.to_f / 100
 		end

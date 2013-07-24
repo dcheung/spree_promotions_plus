@@ -6,7 +6,7 @@ module Spree
 
 		def eligible?(order, options = {})
       taxon = Spree::Taxon.find(preferred_taxon)
-			order.line_items.any?{|line_item| line_item.product.first_taxon.ancestors.include?(taxon)}
+			order.line_items.any?{|li| li.product.first_taxon.ancestors.include?(taxon)}
 		end
 
 	end
