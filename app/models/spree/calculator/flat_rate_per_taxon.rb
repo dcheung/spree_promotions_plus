@@ -11,7 +11,8 @@ module Spree
 
 		def compute(object=nil)
 			return 0 if object.nil?
-			value = object.line_items.map{|li| li.product.taxons.map(&:id).include?(preferred_taxon) ? li.quantity*preferred_amount : 0.0 }.sum
+			taxon = Spree::Taxon.find(preferred_taxon)
+			value = object.line_items.map{|li| li.product.first_taxon.ancestors.include?(taxon) ? li.quantity*self.preferred_amount : 0.0 }.sum
 			(value * 100).round.to_f / 100
 		end
 
