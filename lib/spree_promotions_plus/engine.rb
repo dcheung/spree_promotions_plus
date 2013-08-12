@@ -25,17 +25,13 @@ module SpreePromotionsPlus
 																					 ]
 		end
 
-		initializer 'spree.promo.register.promotion_plus_calculators' do |app|
-			app.config.spree.calculators.promotion_actions_create_adjustments = [
-					        																												Spree::Calculator::FlatPercentItemTotal,
-																																			    Spree::Calculator::FlatRate,
-																																			    Spree::Calculator::FlatPercentPerItem,
-																																			    Spree::Calculator::PerItem,
-																																					Spree::Calculator::FlatPercentPerTaxon,
-																																					Spree::Calculator::FlatRatePerTaxon,
-																																					Spree::Calculator::FreeShipping,
-																																					Spree::Calculator::PayNGetM
-																																					]
+		initializer 'spree.promo.register.promotion_plus_calculators', :after => "spree.promo.register.promotion.calculators" do |app|
+				app.config.spree.calculators.promotion_actions_create_adjustments += [
+																																							Spree::Calculator::FlatPercentPerItem,
+																																							Spree::Calculator::FlatPercentPerTaxon,
+																																							Spree::Calculator::FlatRatePerTaxon,
+																																							Spree::Calculator::PayNGetM
+																																						 ]
 		end
 
 		def self.activate
