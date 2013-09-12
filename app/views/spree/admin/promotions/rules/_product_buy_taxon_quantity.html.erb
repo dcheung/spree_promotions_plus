@@ -5,8 +5,16 @@
   </label>
 
   <label for="<%= "#{param_prefix}_preferred_taxon" %>">
-    <%= "Taxon" %>
-    <%= select_tag 	"#{param_prefix}[preferred_taxon]",
+    <%= "Taxon" %><br />
+    <% taxon_name = !promotion_rule.preferred_taxon.blank? ? (Spree::Taxon.find(promotion_rule.preferred_taxon).name) : '' %>
+    <%= text_field_tag "#{param_prefix}[preferred_taxon]", "#{taxon_name}", :class => "taxons_rules_selector" %>
+    <%= hidden_field_tag "taxon_id_name" , '', :value => "#{taxon_name}" %>
+    
+    <%#= select_tag 	"#{param_prefix}[preferred_taxon]",
      								options_for_select(Spree::Taxon.all.collect{ |t| [t.name_for_select, t.id] }, promotion_rule.preferred_taxon)  %>
   </label>
 </p>
+
+<script type="text/javascript">
+	enable_taxons_rules_selector();
+</script>
