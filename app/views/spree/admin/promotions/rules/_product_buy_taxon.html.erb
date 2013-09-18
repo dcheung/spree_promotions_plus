@@ -1,7 +1,9 @@
 <p class="field">
   <label for="<%= "#{param_prefix}_preferred_taxon" %>">
     <%= "Taxon" %><br />
-    <%= select_tag 	"#{param_prefix}[preferred_taxon]",
-     								options_for_select(Spree::Taxon.all.collect{ |t| [t.name_for_select, t.id] }, promotion_rule.preferred_taxon)  %>
+  	<%= text_field_tag "#{param_prefix}[preferred_taxon]", '', :class => "taxons_rules_selector" %>
+  	<% if !promotion_rule.preferred_taxon.blank? && promotion_rule.preferred_taxon.to_i != 0 %>
+  		<br /><br /><%= "Current Taxon -> " %><%= Spree::Taxon.find(promotion_rule.preferred_taxon).name %>
+  	<% end %>
   </label>
 </p>

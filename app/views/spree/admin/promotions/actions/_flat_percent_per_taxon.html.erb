@@ -21,8 +21,12 @@
 
 			<%= label_tag "#{param_prefix}[calculator_attributes][preferred_taxon]",
 										t("preferred_taxon") %>
-			<%= select_tag 	"#{param_prefix}[calculator_attributes][preferred_taxon]",
-     								options_for_select(Spree::Taxon.all.collect{ |t| [t.name_for_select, t.id] }, promotion_action.calculator.get_preference(:taxon))  %>
+
+     	<%= text_field_tag "#{param_prefix}[calculator_attributes][preferred_taxon]", '', :class => "taxons_rules_selector" %>
+  		<% if !promotion_action.calculator.get_preference(:taxon).blank? && promotion_action.calculator.get_preference(:taxon).to_i != 0 %>
+  			<strong><%= "Current Taxon -> " %><%= Spree::Taxon.find(promotion_action.calculator.get_preference(:taxon)).name %></strong>
+  		<% end %>		
+
 			<%= hidden_field_tag "#{param_prefix}[calculator_attributes][id]", promotion_action.calculator.id %>
 		</div>
 	<% end %>
