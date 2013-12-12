@@ -17,7 +17,12 @@ module Spree
 
 		def target_products
 			#TODO: product groups?
-			self.calculable.promotion.rules.map(&:products).flatten
+			product_groups_rule = self.calculable.promotion.rules.select{|rule| !rule.product_group_id.blank?}	
+			if product_groups_rule.blank?
+				self.calculable.promotion.rules.map(&:products).flatten
+			else
+				product_groups_rule.map{|rule| rule.product_group.products}.flatten
+			end
 		end
 	end
 end
