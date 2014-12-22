@@ -21,8 +21,6 @@ module Spree
 		end
 
 		def target_products
-			products_found = []
-
 			product_groups_rules = self.calculable.promotion.rules.select do |rule| 
 				compatible_rule?(rule)
 			end
