@@ -15,14 +15,24 @@ module Spree
 			(value * 100).round.to_f / 100
 		end
 
+		def compatible_rule?(rule)
+			rule.respond_to?(:preferred_products_source) && rule.respond_to?(:products) && 
+			rule.respond_to?(:product_group) && rule.respond_to?(:eligible_products)
+		end
+
 		def target_products
-			#TODO: product groups?
-			product_groups_rule = self.calculable.promotion.rules.select{|rule| !rule.product_group_id.blank?}	
-			if product_groups_rule.blank?
-				self.calculable.promotion.rules.map(&:products).flatten
-			else
-				product_groups_rule.map{|rule| rule.product_group.products}.flatten
+			products_found = []
+
+			product_groups_rules = self.calculable.promotion.rules.select do |rule| 
+				compatible_rule?(rule)
 			end
+
+			products_found = []
+			product_groups_rules.each do |rule|
+				products_found << rule.eligible_products
+			end
+
+			return products_found.flatten
 		end
 	end
 end
